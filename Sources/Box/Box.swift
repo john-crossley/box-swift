@@ -3,12 +3,21 @@
 //
 
 import Foundation
+import Files
 
 public final class Box {
 
     private var items = [String: String]()
+    private let environmentsFile: String
 
-    public init() {
+    public convenience init() {
+        self.init(envFile: ProcessInfo.processInfo.environment["ENV_FILE_PATH"] ?? "")
+    }
+
+    public init(envFile: String) {
+
+        self.environmentsFile = envFile
+
         do {
             let contents = try loadContents()
 
@@ -27,12 +36,7 @@ public final class Box {
     }
 
     private func loadContents() throws -> [String] {
-        let contents = try String(contentsOf: URL(fileURLWithPath: envPath()))
+        let contents = try String(contentsOf: URL(fileURLWithPath: self.environmentsFile))
         return contents.components(separatedBy: .newlines).filter { !$0.isEmpty }
-    }
-
-    private func envPath() -> String {
-        return ProcessInfo.processInfo.environment["ENV_FILE_PATH"] ??
-            "/Users/jonno/dev/opensource/github/john-crossley/Box/.env"
     }
 }
