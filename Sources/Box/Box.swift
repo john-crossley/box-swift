@@ -3,7 +3,6 @@
 //
 
 import Foundation
-import Files
 
 public final class Box {
 
@@ -15,7 +14,6 @@ public final class Box {
     }
 
     public init(envFile: String) {
-
         self.environmentsFile = envFile
 
         do {
